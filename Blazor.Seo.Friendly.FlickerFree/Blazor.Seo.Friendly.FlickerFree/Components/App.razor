@@ -1,4 +1,29 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Net.Http.Headers
+@using System.Text.RegularExpressions
+@{
+    Boolean isBot = false;
+    @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+    var userAgent = HttpContextAccessor?.HttpContext?.Request.Headers[HeaderNames.UserAgent];
+    if (userAgent.HasValue)
+    {
+        var agent = userAgent.ToString();
+        if (!string.IsNullOrWhiteSpace(agent))
+
+        {
+
+            isBot = Regex.IsMatch(
+                agent,
+                @"bot|crawler|baiduspider|80legs|ia_archiver|voyager|curl|wget|yahoo! slurp|mediapartners-google",
+                RegexOptions.IgnoreCase
+            );
+        }
+        else
+        {
+            isBot = false;
+        }
+    }
+}
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
